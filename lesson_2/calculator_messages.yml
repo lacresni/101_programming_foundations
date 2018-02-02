@@ -1,0 +1,39 @@
+# calculator_messages.yml
+
+en:
+  welcome: "Welcome to Calculator! Enter your name:"
+  valid_name: "Make sure to enter a valid name."
+  hi: "Hi"
+  first_number: "What's the first number?"
+  invalid_nb: "Hmm... that doesn't look like a valid number"
+  second_number: "What's the second number?"
+  operator_prompt: "What operation would you like to perform?\n\r  1) add\n\r  2) substract\n\r  3) multiply\n\r  4) divide"
+  wrong_operator: "Must choose 1, 2, 3 or 4"
+  operation: "the two numbers..."
+  result: "The result is"
+  another_calc: "Do you want to perform another calculation? (Y to calculate again)"
+  valid_char: 'y'
+  bye: "Thank you for using the calculator. Good bye!"
+  adding: 'Adding'
+  substracting: 'Substracting'
+  multiplying: 'Multiplying'
+  dividing: 'Dividing'
+
+fr:
+  welcome: "Bienvenue sur le Calculateur! Quel est votre nom?"
+  valid_name: "Veuillez entrer un nom valide."
+  hi: "Salut"
+  first_number: "Quel est le premier nombre?"
+  invalid_nb: "Hmm... cela n'a pas l'air d'être un nombre valide"
+  second_number: "Quel est le deuxième nombre?"
+  operator_prompt: "Quelle operation voulez vous effectuer?\n\r  1) ajouter\n\r  2) soustraire\n\r  3) multiplier\n\r  4) diviser"
+  wrong_operator: "Vous devez choisir 1, 2, 3 ou 4"
+  operation: "les deux nombres..."
+  result: "Le résultat est"
+  another_calc: "Voulez vous effectuer un autre calcul? (O pour un nouveau calcul)"
+  valid_char: 'o'
+  bye: "Merci d'avoir utilisé le calculateur. A bientôt!"
+  adding: 'Additionne'
+  substracting: 'Soustrait'
+  multiplying: 'Multiplie'
+  dividing: 'Divise'
