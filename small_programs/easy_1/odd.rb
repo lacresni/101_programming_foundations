@@ -1,5 +1,5 @@
 def is_odd?(number)
-  ( number.abs % 2 ) == 1
+  (number.abs % 2) == 1
 end
 
 # TESTS CASES

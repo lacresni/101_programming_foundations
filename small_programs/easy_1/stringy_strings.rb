@@ -15,18 +15,18 @@ puts stringy(7) == '1010101'
 puts stringy(0) == ''
 
 puts
-puts "Further Exploration"
+puts 'Further Exploration'
 puts
 
 def stringy_further(number, order = 1)
   string = ''
 
   number.times do |x|
-    if order == 0
-      string << (x.odd? ? '1' : '0')
-    else
-      string << (x.even? ? '1' : '0')
-    end
+    string << if order == 1
+                (x.even? ? '1' : '0')
+              else
+                (x.odd? ? '1' : '0')
+              end
   end
 
   string

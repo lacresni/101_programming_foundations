@@ -3,11 +3,11 @@ def average(nb_array)
 end
 
 puts average([1, 5, 87, 45, 8, 8]) == 25
-puts average([9, 47, 23, 95, 16, 52]) == 40  # 242 / 6 = 40.3333
+puts average([9, 47, 23, 95, 16, 52]) == 40 # 242 / 6 = 40.3333
 
-puts "-------------------"
-puts "Further exploration"
-puts "-------------------"
+puts '-------------------'
+puts 'Further exploration'
+puts '-------------------'
 
 def average_further(nb_array)
   nb_array.reduce(:+).to_f / nb_array.count
