@@ -3,7 +3,7 @@
 # - Join the elements into a string separated by a space
 
 def reverse_sentence(input_string)
-  input_string.split.reverse.join(" ")
+  input_string.split.reverse.join(' ')
 end
 
 puts reverse_sentence('') == ''
