@@ -115,7 +115,7 @@ Style/Next:
 
 Style/NumericLiterals:
   Description: Add underscores to large numeric literals to improve their readability.
-  Enabled: false
+  Enabled: true
 
 Style/NumericPredicate:
   Description: >-
@@ -195,7 +195,7 @@ Style/WhileUntilModifier:
 
 Style/WordArray:
   Description: 'Use %w or %W for arrays of words.'
-  Enabled: false
+  Enabled: true
 
 Metrics/AbcSize:
   Description: >-
