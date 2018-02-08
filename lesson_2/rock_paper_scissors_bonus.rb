@@ -34,7 +34,7 @@ def display_results(player, computer)
   end
 end
 
-def compute_score!(player, computer, score)
+def update_score(player, computer, score)
   if win?(player, computer)
     score[:player] += 1
   elsif win?(computer, player)
@@ -67,7 +67,7 @@ loop do
 
   display_results(choice, computer_choice)
 
-  compute_score!(choice, computer_choice, hash_score)
+  update_score(choice, computer_choice, hash_score)
   display_score(hash_score)
 
   break if (hash_score[:player] == 5) || (hash_score[:computer] == 5)
