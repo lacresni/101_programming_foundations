@@ -41,11 +41,9 @@ See above
 ```
 - Create empty string
 - Iterate through the string with index
-  - For each character, check if char is in (a-z) or (A-Z)
-    - If yes
-      - Capitalize if index is even and add to new string
-      - Downcase if index is odd add to new string
-    - If no, add to new string
+  - For each character
+    - Capitalize if index is even and add to new string
+    - Downcase if index is odd add to new string
 - Return new string
 ```
 
