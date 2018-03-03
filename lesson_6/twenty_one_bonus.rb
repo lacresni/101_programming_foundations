@@ -11,12 +11,14 @@
 PLAYER_ID = :player
 DEALER_ID = :dealer
 
+ROUNDS_TO_WIN = 5
+
 SUITE = %w[2 3 4 5 6 7 8 9 10 jack queen king ace]
 CARD_VALUES = { '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7,
                 '8' => 8, '9' => 9, '10' => 10, 'jack' => 10, 'queen' => 10,
                 'king' => 10 }
 
-TWENTY_ONE_SCORE = 21
+WINNING_SCORE = 21
 DEALER_MIN_SCORE = 17
 
 ACE_MAX_VALUE = 11
@@ -76,9 +78,9 @@ def display_deck(deck_arr, player, full = false)
 end
 
 def display_result(player_score, dealer_score)
-  if player_score > TWENTY_ONE_SCORE
+  if player_score > WINNING_SCORE
     puts "Busted... You lose..."
-  elsif dealer_score > TWENTY_ONE_SCORE
+  elsif dealer_score > WINNING_SCORE
     puts "Dealer Busted... You win!!!"
   elsif player_score > dealer_score
     puts "You win!!"
@@ -89,11 +91,29 @@ def display_result(player_score, dealer_score)
   end
 end
 
+def round_winner(player_arr, dealer_arr)
+  player_score = player_arr[0]
+  dealer_score = dealer_arr[0]
+  player_win_round = player_arr[1]
+  dealer_win_round = dealer_arr[1]
+
+  if player_score > WINNING_SCORE
+    dealer_win_round += 1
+  elsif dealer_score > WINNING_SCORE
+    player_win_round += 1
+  elsif player_score > dealer_score
+    player_win_round += 1
+  elsif player_score < dealer_score
+    dealer_win_round += 1
+  end
+  [player_win_round, dealer_win_round]
+end
+
 def calculating_aces(nb_aces, current_score)
   nb_aces.downto(1) do |nb_ace|
     score = current_score + nb_ace * ACE_MAX_VALUE
     current_score +=
-      (score > TWENTY_ONE_SCORE ? ACE_DEFAULT_VALUE : ACE_MAX_VALUE)
+      (score > WINNING_SCORE ? ACE_DEFAULT_VALUE : ACE_MAX_VALUE)
   end
   current_score
 end
@@ -108,66 +128,86 @@ def compute_deck_score(deck)
 end
 
 def busted?(score)
-  score > TWENTY_ONE_SCORE
+  score > WINNING_SCORE
 end
 
 loop do
-  system 'clear'
+  player_wins = 0
+  dealer_wins = 0
 
-  my_deck = initialize_deck
-
-  # Deal cards to player and dealer
-  player_deck = deal_cards!(my_deck)
-  dealer_deck = deal_cards!(my_deck)
-  # Compute initial scores (used for busted verification)
-  player_score = compute_deck_score(player_deck)
-  dealer_score = compute_deck_score(dealer_deck)
-
-  # Display initial decks
-  display_decks([dealer_deck, dealer_score],
-                [player_deck, player_score])
-
-  prompt "Player turn"
   loop do
-    answer = ''
+    system 'clear'
+    puts "Scores: Player #{player_wins} Dealer #{dealer_wins}"
+
+    my_deck = initialize_deck
+
+    # Deal cards to player and dealer
+    player_deck = deal_cards!(my_deck)
+    dealer_deck = deal_cards!(my_deck)
+    # Compute initial scores (used for busted verification)
+    player_score = compute_deck_score(player_deck)
+    dealer_score = compute_deck_score(dealer_deck)
+
+    # Display initial decks
+    display_decks([dealer_deck, dealer_score],
+                  [player_deck, player_score])
+
+    prompt "Player turn"
     loop do
-      prompt "Would you like to (h)it or (s)tay?"
-      answer = gets.chomp.downcase
-      break if ['h', 's'].include?(answer)
-      prompt "Sorry, you must enter 'h' or 's'"
+      answer = ''
+      loop do
+        prompt "Would you like to (h)it or (s)tay?"
+        answer = gets.chomp.downcase
+        break if ['h', 's'].include?(answer)
+        prompt "Sorry, you must enter 'h' or 's'"
+      end
+      if answer == 'h'
+        player_deck << deal_card!(my_deck)
+        player_score = compute_deck_score(player_deck)
+        display_decks([dealer_deck, dealer_score],
+                      [player_deck, player_score])
+      end
+      break if answer == 's' || busted?(player_score)
     end
-    if answer == 'h'
-      player_deck << deal_card!(my_deck)
-      player_score = compute_deck_score(player_deck)
-      display_decks([dealer_deck, dealer_score],
-                    [player_deck, player_score])
+
+    if !busted?(player_score)
+      puts "You chose to stay!"
+
+      prompt "Dealer turn"
+      loop do
+        display_decks([dealer_deck, dealer_score],
+                      [player_deck, player_score],
+                      FULL_DISPLAY)
+
+        break if compute_deck_score(dealer_deck) >= DEALER_MIN_SCORE ||
+                 busted?(dealer_score)
+
+        prompt "Dealer hits"
+        dealer_deck << deal_card!(my_deck)
+        dealer_score = compute_deck_score(dealer_deck)
+      end
+      prompt "Dealer stays"
+
+      if !busted?(dealer_score)
+        puts "You have #{player_score}, dealer has #{dealer_score}"
+      end
     end
-    break if answer == 's' || busted?(player_score)
+    display_result(player_score, dealer_score)
+
+    puts "Hit any key to continue..."
+    gets
+
+    player_wins, dealer_wins = round_winner([player_score, player_wins],
+                                            [dealer_score, dealer_wins])
+
+    break if player_wins >= ROUNDS_TO_WIN || dealer_wins >= ROUNDS_TO_WIN
   end
 
-  if !busted?(player_score)
-    puts "You chose to stay!"
-
-    prompt "Dealer turn"
-    loop do
-      display_decks([dealer_deck, dealer_score],
-                    [player_deck, player_score],
-                    FULL_DISPLAY)
-
-      break if compute_deck_score(dealer_deck) >= DEALER_MIN_SCORE ||
-               busted?(dealer_score)
-
-      prompt "Dealer hits"
-      dealer_deck << deal_card!(my_deck)
-      dealer_score = compute_deck_score(dealer_deck)
-    end
-    prompt "Dealer stays"
-
-    if !busted?(dealer_score)
-      puts "You have #{player_score}, dealer has #{dealer_score}"
-    end
+  if player_wins >= ROUNDS_TO_WIN
+    puts "Congratulations!!! Player has won the game!"
+  else
+    puts "Sorry, dealer has won this time..."
   end
-  display_result(player_score, dealer_score)
 
   prompt "Do you want to play again? (y or n)"
   answer = gets.chomp
