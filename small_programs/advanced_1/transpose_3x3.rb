@@ -1,7 +1,9 @@
 def transpose(matrix)
+  # create an array with n []
   transposed = Array.new(matrix.size) { Array.new }
 
   matrix.each do |line|
+    # fill each column of the new array with the original line content
     line.each_with_index { |j, index| transposed[index] << j }
   end
 
