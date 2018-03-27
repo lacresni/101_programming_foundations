@@ -1,21 +1,19 @@
 def egyptian(rational)
-  return [1] if rational == Rational(1, 1)
-
   fractions = []
-  temp = rational
   denominator = 1
 
   loop do
-    if temp >= Rational(1, denominator)
+    current_fraction = Rational(1, denominator)
+    if rational >= current_fraction
       fractions << denominator
-      temp -= Rational(1, denominator)
+      rational -= current_fraction
     end
-    denominator += 1
 
-    break if temp.numerator == 1 && temp <= Rational(1, denominator)
+    break if rational.numerator == 0
+    denominator += 1
   end
 
-  fractions << temp.denominator
+  fractions
 end
 
 p egyptian(Rational(2, 1))    == [1, 2, 3, 6]
